@@ -1,0 +1,55 @@
+VRRP
+MASTER
+
+ether 7
+192.168.1.1/24
+VRRP
+192.168.1.254
+192.168.1.254
+
+
+VRID 1
+Priority 150
+interval 1.00
+version 3
+ipv4
+
+ON master
+
+/interface enable ether2;
+/interface enable ether3;
+/interface enable ether4;
+/routing bgp peer enable 2;
+
+On Slave
+
+ /interface disable ether2;
+/interface disable ether3;
+/interface disable ether4;
+/routing bgp peer disable 2;
+
+
+VRRP
+SLAVE3d
+
+VRID 1
+Priority 100
+interval 1s
+version 3
+
+2   ;;; VRRP
+     192.168.1.2/24     192.168.1.0     ether7  
+t|	s   192.168.1.254   vrrp1
+
+ on-backup="/interface disable ether2;\r\
+    \n/interface disable ether3;\r\
+    \n/interface disable ether4;\r\
+    \n/routing bgp peer disable 2;" 
+
+on-master="/interface enable ether2;\r\
+    \n/interface enable ether3;\r\
+    \n/interface enable ether4;\r\
+    \n/routing bgp peer enable 2;\r\
+    \n\r\
+    \n\r\
+    \n"
